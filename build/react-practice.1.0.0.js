@@ -53,9 +53,7 @@
 	    displayName: 'Person',
 	
 	    getInitialState: function getInitialState() {
-	        return {
-	            highlight: false
-	        };
+	        return { highlight: false };
 	    },
 	    onClick: function onClick() {
 	        this.setState({
@@ -82,26 +80,6 @@
 	    }
 	});
 	
-	/*macDaddyElement - jsonData...
-	render everything...doc ready
-	
-	board(props)
-	    title = props.title
-	    loops to create 2 lists
-	
-	List(props == listArray)
-	props.title
-	loop to create 1 list of 3 cards
-	
-	Card....something to create a single list item.
-	
-	
-	var Card = function(props){
-	    return (
-	            <li className='task-name'>{props.name}</li>
-	    )
-	};
-	*/
 	var Cards = function Cards(props) {
 	    return React.createElement(
 	        'li',
@@ -135,6 +113,7 @@
 	
 	var Board = function Board(props) {
 	    var listsArray = [];
+	    console.log(props.data.lists);
 	    for (var i = 0; i < props.data.lists.length; i++) {
 	        listsArray.push(React.createElement(List, { data: props.data.lists[i], hotdog: 'hot dog!!!' }));
 	    }
@@ -165,33 +144,6 @@
 	    }]
 	};
 	
-	/*
-	var Person = function(props) {
-	    return (
-	        <div className="person">
-	            <div className="person-name">{props.name}</div>
-	            <img className="person-img" src={props.imageURL}/>
-	            <div className="person-job">{props.job}</div>
-	        </div>
-	    );
-	};
-	*/
-	
-	/*Person.defaultProps = {
-	    imageURL: "https://lovelace-media.imgix.net/uploads/749/e3255890-cc39-0133-825d-0ed2e059c4cf.jpg?",
-	    name: "Jon Snow",
-	    job: "Knowing nothing"
-	}
-	
-	var PersonList = function() {
-	    return (
-	        <div className="person-list">
-	            <Person name="Derek Zoolander" imageURL="http://uifaces.com/assets/static/images/zoolander.jpg" job="Male model"/>
-	            <Person name="Donald Knuth" imageURL="http://www-cs-faculty.stanford.edu/~uno/don.gif" job="Clever chap"/>
-	            <Person/>
-	        </div>
-	    )
-	}*/
 	document.addEventListener('DOMContentLoaded', function () {
 	    ReactDOM.render(React.createElement(Board, { data: seed }), document.getElementById('app'));
 	});
