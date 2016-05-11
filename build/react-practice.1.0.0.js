@@ -107,16 +107,45 @@
 	            'ul',
 	            null,
 	            cardsArray
+	        ),
+	        React.createElement(
+	            'form',
+	            null,
+	            React.createElement('input', { type: 'text', placeholder: 'Write your name', onChange: props.changeInput }),
+	            React.createElement('input', { type: 'submit' })
 	        )
 	    );
 	};
+	
+	var BoardReactor = React.createClass({
+	    displayName: 'BoardReactor',
+	
+	
+	    onAddInputChanged: function onAddInputChanged() {
+	        console.log('value changed');
+	    },
+	
+	    onAddClick: function onAddClick() {
+	        console.log('clicked!');
+	    },
+	
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(Board, { data: this.props.data, changeInput: this.onAddInputChanged, clicky: this.onAddClick })
+	        );
+	    }
+	
+	});
 	
 	var Board = function Board(props) {
 	    var listsArray = [];
 	    console.log(props.data.lists);
 	    for (var i = 0; i < props.data.lists.length; i++) {
-	        listsArray.push(React.createElement(List, { data: props.data.lists[i], hotdog: 'hot dog!!!' }));
-	    }
+	        listsArray.push(React.createElement(List, { data: props.data.lists[i], changeInput: props.changeInput }));
+	    };
+	
 	    return React.createElement(
 	        'div',
 	        { className: 'Board' },
@@ -145,7 +174,7 @@
 	};
 	
 	document.addEventListener('DOMContentLoaded', function () {
-	    ReactDOM.render(React.createElement(Board, { data: seed }), document.getElementById('app'));
+	    ReactDOM.render(React.createElement(BoardReactor, { data: seed }), document.getElementById('app'));
 	});
 
 /***/ },

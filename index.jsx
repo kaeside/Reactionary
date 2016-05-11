@@ -39,16 +39,43 @@ var List = function(props) {
         <div>
             <h1>{props.data.title} {props.hotdog}</h1>
             <ul>{cardsArray}</ul>
+            <form>
+                <input type="text" placeholder="Write your name" onChange={props.changeInput}/>
+                <input type="submit"/>
+            </form>
         </div>
     )
 };
 
-var Board = function(props) {
+var BoardReactor = React.createClass({
+
+    onAddInputChanged: function(){
+        console.log('value changed');
+    },
+
+    onAddClick: function() {
+        console.log('clicked!')
+    },
+
+    render: function(){
+        return (
+            <div>
+                <Board data={this.props.data} changeInput={this.onAddInputChanged} clicky={this.onAddClick} />
+            </div>
+        )
+    }
+
+});
+
+
+var Board = function(props){
     var listsArray = [];
     console.log(props.data.lists);
     for (var i = 0; i < props.data.lists.length; i++) {
-        listsArray.push(<List data={props.data.lists[i]} hotdog={'hot dog!!!'}/>);
-    }
+        listsArray.push(<List data={props.data.lists[i]} changeInput={props.changeInput}/>);
+    };
+
+
     return (
         <div className='Board'>
             <h1>{props.data.title}</h1>
@@ -72,5 +99,5 @@ var seed = {
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
-        <Board data={seed}/>, document.getElementById('app'));
+        <BoardReactor data={seed}/>, document.getElementById('app'));
 });
