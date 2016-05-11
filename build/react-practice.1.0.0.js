@@ -49,42 +49,51 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(33);
 	
-	var Person = React.createClass({
-	    displayName: 'Person',
+	var BoardReactor = React.createClass({
+	    displayName: 'BoardReactor',
 	
-	    getInitialState: function getInitialState() {
-	        return { highlight: false };
+	
+	    onAddInputChanged: function onAddInputChanged() {
+	        console.log('value changed');
 	    },
-	    onClick: function onClick() {
-	        this.setState({
-	            highlight: !this.state.highlight
-	        });
+	
+	    onAddClick: function onAddClick(event) {
+	        event.preventDefault();
+	        console.log('clicked!');
 	    },
+	
 	    render: function render() {
-	        var classes = 'person ' + (this.state.highlight ? 'highlight' : '');
 	        return React.createElement(
 	            'div',
-	            { className: classes, onClick: this.onClick },
-	            React.createElement(
-	                'div',
-	                { className: 'person-name' },
-	                this.props.name
-	            ),
-	            React.createElement('img', { className: 'person-img', src: this.props.imageURL }),
-	            React.createElement(
-	                'div',
-	                { className: 'person-job' },
-	                this.props.job
-	            )
+	            null,
+	            React.createElement(Board, { data: this.props.data,
+	                changeInput: this.onAddInputChanged,
+	                clicky: this.onAddClick })
 	        );
 	    }
+	
 	});
 	
-	var Cards = function Cards(props) {
+	var Board = function Board(props) {
+	    var listsArray = [];
+	    console.log(props.data.lists);
+	    for (var i = 0; i < props.data.lists.length; i++) {
+	        listsArray.push(React.createElement(List, { data: props.data.lists[i], changeInput: props.changeInput, clicky: props.clicky }));
+	    };
+	
 	    return React.createElement(
-	        'li',
-	        null,
-	        props.data
+	        'div',
+	        { className: 'Board' },
+	        React.createElement(
+	            'h1',
+	            null,
+	            props.data.title
+	        ),
+	        React.createElement(
+	            'div',
+	            null,
+	            listsArray
+	        )
 	    );
 	};
 	
@@ -112,53 +121,16 @@
 	            'form',
 	            null,
 	            React.createElement('input', { type: 'text', placeholder: 'Write your name', onChange: props.changeInput }),
-	            React.createElement('input', { type: 'submit' })
+	            React.createElement('input', { type: 'submit', onClick: props.clicky })
 	        )
 	    );
 	};
 	
-	var BoardReactor = React.createClass({
-	    displayName: 'BoardReactor',
-	
-	
-	    onAddInputChanged: function onAddInputChanged() {
-	        console.log('value changed');
-	    },
-	
-	    onAddClick: function onAddClick() {
-	        console.log('clicked!');
-	    },
-	
-	    render: function render() {
-	        return React.createElement(
-	            'div',
-	            null,
-	            React.createElement(Board, { data: this.props.data, changeInput: this.onAddInputChanged, clicky: this.onAddClick })
-	        );
-	    }
-	
-	});
-	
-	var Board = function Board(props) {
-	    var listsArray = [];
-	    console.log(props.data.lists);
-	    for (var i = 0; i < props.data.lists.length; i++) {
-	        listsArray.push(React.createElement(List, { data: props.data.lists[i], changeInput: props.changeInput }));
-	    };
-	
+	var Cards = function Cards(props) {
 	    return React.createElement(
-	        'div',
-	        { className: 'Board' },
-	        React.createElement(
-	            'h1',
-	            null,
-	            props.data.title
-	        ),
-	        React.createElement(
-	            'div',
-	            null,
-	            listsArray
-	        )
+	        'li',
+	        null,
+	        props.data
 	    );
 	};
 	

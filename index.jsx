@@ -1,32 +1,42 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var Person = React.createClass({
-    getInitialState: function() {
-        return {highlight: false};
+var BoardReactor = React.createClass({
+
+    onAddInputChanged: function(){
+        console.log('value changed');
     },
-    onClick: function() {
-        this.setState({
-            highlight: !this.state.highlight
-        });
+
+    onAddClick: function(event) {
+        event.preventDefault();
+        console.log('clicked!')
     },
-    render: function() {
-        var classes = 'person ' + (this.state.highlight
-            ? 'highlight'
-            : '');
+
+    render: function(){
         return (
-            <div className={classes} onClick={this.onClick}>
-                <div className="person-name">{this.props.name}</div>
-                <img className="person-img" src={this.props.imageURL}/>
-                <div className="person-job">{this.props.job}</div>
+            <div>
+                <Board data={this.props.data}
+                    changeInput={this.onAddInputChanged}
+                    clicky={this.onAddClick} />
             </div>
-        );
+        )
     }
+
 });
 
-var Cards = function(props) {
+var Board = function(props){
+    var listsArray = [];
+    console.log(props.data.lists);
+    for (var i = 0; i < props.data.lists.length; i++) {
+        listsArray.push(<List data={props.data.lists[i]} changeInput={props.changeInput} clicky={props.clicky}/>);
+    };
+
+
     return (
-        <li>{props.data}</li>
+        <div className='Board'>
+            <h1>{props.data.title}</h1>
+            <div>{listsArray}</div>
+        </div>
     )
 };
 
@@ -41,46 +51,15 @@ var List = function(props) {
             <ul>{cardsArray}</ul>
             <form>
                 <input type="text" placeholder="Write your name" onChange={props.changeInput}/>
-                <input type="submit"/>
+                <input type="submit" onClick={props.clicky}/>
             </form>
         </div>
     )
 };
 
-var BoardReactor = React.createClass({
-
-    onAddInputChanged: function(){
-        console.log('value changed');
-    },
-
-    onAddClick: function() {
-        console.log('clicked!')
-    },
-
-    render: function(){
-        return (
-            <div>
-                <Board data={this.props.data} changeInput={this.onAddInputChanged} clicky={this.onAddClick} />
-            </div>
-        )
-    }
-
-});
-
-
-var Board = function(props){
-    var listsArray = [];
-    console.log(props.data.lists);
-    for (var i = 0; i < props.data.lists.length; i++) {
-        listsArray.push(<List data={props.data.lists[i]} changeInput={props.changeInput}/>);
-    };
-
-
+var Cards = function(props) {
     return (
-        <div className='Board'>
-            <h1>{props.data.title}</h1>
-            <div>{listsArray}</div>
-        </div>
+        <li>{props.data}</li>
     )
 };
 
