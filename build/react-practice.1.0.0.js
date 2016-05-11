@@ -49,103 +49,47 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(33);
 	
-	var Person = React.createClass({
-	    displayName: 'Person',
+	var SoundCloudEmbed = function SoundCloudEmbed(props) {
+	    var playerUrl = 'https://w.soundcloud.com/player/';
+	    var trackUrl = 'https://api.soundcloud.com/tracks/' + props.trackId;
+	    var options = 'auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true';
+	    var src = playerUrl + '?url=' + trackUrl + '&' + options;
+	    return React.createElement('iframe', { width: '100%', height: '450', scrolling: 'no', frameborder: 'no', src: src });
+	};
+	
+	var Button = function Button(props) {
+	    return React.createElement(
+	        'button',
+	        { onClick: props.onClick },
+	        props.text
+	    );
+	};
+	
+	var Surprise = React.createClass({
+	    displayName: 'Surprise',
 	
 	    getInitialState: function getInitialState() {
-	        return { highlight: false };
+	        return {
+	            clicked: false
+	        };
 	    },
-	    onClick: function onClick() {
+	    onButtonClick: function onButtonClick() {
 	        this.setState({
-	            highlight: !this.state.highlight
+	            clicked: true
 	        });
 	    },
 	    render: function render() {
-	        var classes = 'person ' + (this.state.highlight ? 'highlight' : '');
 	        return React.createElement(
 	            'div',
-	            { className: classes, onClick: this.onClick },
-	            React.createElement(
-	                'div',
-	                { className: 'person-name' },
-	                this.props.name
-	            ),
-	            React.createElement('img', { className: 'person-img', src: this.props.imageURL }),
-	            React.createElement(
-	                'div',
-	                { className: 'person-job' },
-	                this.props.job
-	            )
+	            null,
+	            React.createElement(Button, { onClick: this.onButtonClick, text: 'Ready to be amazed?' }),
+	            this.state.clicked ? React.createElement(SoundCloudEmbed, { trackId: '191075550' }) : null
 	        );
 	    }
 	});
 	
-	var Cards = function Cards(props) {
-	    return React.createElement(
-	        'li',
-	        null,
-	        props.data
-	    );
-	};
-	
-	var List = function List(props) {
-	    var cardsArray = [];
-	    for (var i = 0; i < props.data.cards.length; i++) {
-	        cardsArray.push(React.createElement(Cards, { data: props.data.cards[i] }));
-	    }
-	    return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	            'h1',
-	            null,
-	            props.data.title,
-	            ' ',
-	            props.hotdog
-	        ),
-	        React.createElement(
-	            'ul',
-	            null,
-	            cardsArray
-	        )
-	    );
-	};
-	
-	var Board = function Board(props) {
-	    var listsArray = [];
-	    console.log(props.data.lists);
-	    for (var i = 0; i < props.data.lists.length; i++) {
-	        listsArray.push(React.createElement(List, { data: props.data.lists[i], hotdog: 'hot dog!!!' }));
-	    }
-	    return React.createElement(
-	        'div',
-	        { className: 'Board' },
-	        React.createElement(
-	            'h1',
-	            null,
-	            props.data.title
-	        ),
-	        React.createElement(
-	            'div',
-	            null,
-	            listsArray
-	        )
-	    );
-	};
-	
-	var seed = {
-	    title: 'Board title',
-	    lists: [{
-	        title: 'List 1 title',
-	        cards: ['Card 1', 'Card 2', 'Card 3']
-	    }, {
-	        title: 'List 2 title',
-	        cards: ['Card 1', 'Card 2', 'Card 3']
-	    }]
-	};
-	
 	document.addEventListener('DOMContentLoaded', function () {
-	    ReactDOM.render(React.createElement(Board, { data: seed }), document.getElementById('app'));
+	    ReactDOM.render(React.createElement(Surprise, null), document.getElementById('app'));
 	});
 
 /***/ },

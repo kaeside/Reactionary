@@ -1,76 +1,41 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var Person = React.createClass({
+var SoundCloudEmbed = function(props) {
+    var playerUrl = 'https://w.soundcloud.com/player/';
+    var trackUrl = 'https://api.soundcloud.com/tracks/' + props.trackId;
+    var options = 'auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true';
+    var src = playerUrl + '?url=' + trackUrl + '&' + options;
+    return <iframe width="100%" height="450" scrolling="no" frameborder="no" src={src}></iframe>;
+};
+
+var Button = function(props) {
+    return <button onClick={props.onClick}>{props.text}</button>;
+};
+
+var Surprise = React.createClass({
     getInitialState: function() {
-        return {highlight: false};
+        return {
+            clicked: false
+        };
     },
-    onClick: function() {
+    onButtonClick: function() {
         this.setState({
-            highlight: !this.state.highlight
+            clicked: true
         });
     },
     render: function() {
-        var classes = 'person ' + (this.state.highlight
-            ? 'highlight'
-            : '');
         return (
-            <div className={classes} onClick={this.onClick}>
-                <div className="person-name">{this.props.name}</div>
-                <img className="person-img" src={this.props.imageURL}/>
-                <div className="person-job">{this.props.job}</div>
+            <div>
+                <Button onClick={this.onButtonClick} text="Ready to be amazed?" />
+                {this.state.clicked ? <SoundCloudEmbed trackId='191075550' /> : null}
             </div>
         );
     }
 });
 
-var Cards = function(props) {
-    return (
-        <li>{props.data}</li>
-    )
-};
-
-var List = function(props) {
-    var cardsArray = [];
-    for (var i = 0; i < props.data.cards.length; i++) {
-        cardsArray.push(<Cards data={props.data.cards[i]}/>);
-    }
-    return (
-        <div>
-            <h1>{props.data.title} {props.hotdog}</h1>
-            <ul>{cardsArray}</ul>
-        </div>
-    )
-};
-
-var Board = function(props) {
-    var listsArray = [];
-    console.log(props.data.lists);
-    for (var i = 0; i < props.data.lists.length; i++) {
-        listsArray.push(<List data={props.data.lists[i]} hotdog={'hot dog!!!'}/>);
-    }
-    return (
-        <div className='Board'>
-            <h1>{props.data.title}</h1>
-            <div>{listsArray}</div>
-        </div>
-    )
-};
-
-var seed = {
-    title: 'Board title',
-    lists: [
-        {
-            title: 'List 1 title',
-            cards: ['Card 1', 'Card 2', 'Card 3']
-        }, {
-            title: 'List 2 title',
-            cards: ['Card 1', 'Card 2', 'Card 3']
-        }
-    ]
-};
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
-        <Board data={seed}/>, document.getElementById('app'));
+        <Surprise />, document.getElementById('app'));
 });
